@@ -14,7 +14,7 @@ Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
   next();
-})
+});
 router.afterEach(() => {
   window.scrollTo(0, 0);
 });
