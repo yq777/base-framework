@@ -5,11 +5,14 @@ const instance = axios.create();
 
 instance.defaults.timeout = 10 * 1000;
 
-instance.defaults.baseURL = '';
+instance.defaults.baseURL = 'backend';
 
 instance.interceptors.request.use(
   request => {
-    request.headers = {};
+    request.headers = {
+      'Content-Type': 'application/json'
+    };
+    return request;
   }
 );
 

@@ -6,14 +6,15 @@ import createLogger from 'vuex/dist/logger';
 
 Vue.use(Vuex);
 
-const plugins = [createPersistedState({storage: window.sessionStorage, key: '__RC_C_BACKEND_STORE__'})];
+const debug = process.env.NODE_ENV !== 'production';
 
-const debug = process.env.NODE_ENV !== 'production' ? plugins.push(createLogger()) : null;
+const plugins = [createPersistedState({storage: window.sessionStorage, key: '__RC_C_BACKEND_STORE__'})];
+debug ? plugins.push(createLogger()) : null;
 
 export default new Vuex.Store({
-  modules: [
+  modules: {
     common
-  ],
+  },
   plugins,
   strict: debug
 });

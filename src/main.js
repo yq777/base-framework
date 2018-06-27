@@ -6,7 +6,7 @@ import router from './router';
 import './styles/index.less';
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
-import store from "./store";
+import store from './store';
 
 Vue.use(ElementUI, {size: "small"});
 

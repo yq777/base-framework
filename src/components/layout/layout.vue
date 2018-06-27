@@ -5,13 +5,13 @@
         <img class="u-logo" src="../../../build/logo.png"/>
       </div>
       <div class="m-username">
-        <el-dropdown trigger="click">
+        <el-dropdown trigger="click" @command="logout">
           <span class="u-username">
-            张三
+            {{userInfo.username}}
             <i class="el-icon-caret-bottom u-arrow-down"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item command='logout'>退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -43,104 +43,39 @@
 </template>
 
 <script>
+  import {mapState} from "vuex";
+  import {logoutUser} from "../../api";
+  import {SET_USERINFO} from "../../store/mutation-types";
+  import {menu} from '../../utils/menu';
+
   export default {
     data() {
       return {
-        menu: [
-          {
-            label: "菜单1",
-            value: "1",
-            children: [
-              {
-                label: "子菜单1",
-                value: '/test'
-              },
-              {
-                label: "子菜单2",
-                value: '/test1'
-              },
-              {
-                label: "子菜单3",
-                value: '1-3'
-              },
-              {
-                label: "子菜单4",
-                value: '1-4'
-              }
-            ]
-          },
-          {
-            label: "菜单2",
-            value: "2",
-            children: [
-              {
-                label: "子菜单1",
-                value: '2-1'
-              },
-              {
-                label: "子菜单2",
-                value: '2-2'
-              },
-              {
-                label: "子菜单3",
-                value: '2-3'
-              },
-              {
-                label: "子菜单4",
-                value: '2-4'
-              }
-            ]
-          },
-          {
-            label: "菜单3",
-            value: "3",
-            children: [
-              {
-                label: "子菜单1",
-                value: '3-1'
-              },
-              {
-                label: "子菜单2",
-                value: '3-2'
-              },
-              {
-                label: "子菜单3",
-                value: '3-3'
-              },
-              {
-                label: "子菜单4",
-                value: '3-4'
-              }
-            ]
-          },
-          {
-            label: "菜单4",
-            value: "4",
-            children: [
-              {
-                label: "子菜单1",
-                value: '4-1'
-              },
-              {
-                label: "子菜单2",
-                value: '4-2'
-              },
-              {
-                label: "子菜单3",
-                value: '4-3'
-              },
-              {
-                label: "子菜单4",
-                value: '4-4'
-              }
-            ]
-          }
-        ]
+        menu
       }
+    },
+    computed: {
+      ...mapState('common', [
+        'userInfo'
+      ])
     },
     created() {
     },
-    methods: {}
+    methods: {
+      logout(command) {
+        if (command === 'logout') {
+          this.$confirm('确认退出当前用户吗?', '提示', {type: 'warning'}).then(() => {
+            logoutUser().then(() => {
+              this.$message.success('退出成功');
+              this.$store.commit(`common/${SET_USERINFO}`, {});
+              this.$router.replace({
+                name: 'login'
+              })
+            })
+          });
+        }
+      }
+    }
   }
 </script>
 
